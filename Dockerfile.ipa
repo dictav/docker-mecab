@@ -1,0 +1,15 @@
+From dictav/mecab:0.996 as build
+
+RUN apk add --update build-base curl \
+  && curl -sLO 'https://github.com/taku910/mecab/archive/master.zip' \
+  && unzip master.zip \
+  # install ipa dictionary
+  && cd mecab-master/mecab-ipadic \
+  && ./configure --with-charset=utf-8 \
+  && make \
+  && make install
+
+
+FROM dictav/mecab:0.996
+COPY --from=build /usr/local/lib/mecab/dic/ipadic /usr/local/lib/mecab/dic/ipadic
+CMD ["/usr/local/bin/mecab"]

@@ -1,0 +1,14 @@
+From dictav/mecab:0.996 as build
+
+RUN apk add --update make curl \
+  && curl -sLO 'https://github.com/taku910/mecab/archive/master.zip' \
+  && unzip master.zip \
+  && cd mecab-master/mecab-jumandic \
+  && ./configure --with-charset=utf-8 \
+  && make \
+  && make install
+
+FROM dictav/mecab:0.996
+COPY --from=build /usr/local/lib/mecab/dic/jumandic /usr/local/lib/mecab/dic/jumandic
+RUN sed -i 's/ipadic/jumandic/' /usr/local/etc/mecabrc
+CMD ["/usr/local/bin/mecab"]
