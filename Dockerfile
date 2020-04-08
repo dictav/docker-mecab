@@ -1,4 +1,4 @@
-From alpine:3.8 as build
+From alpine:3.11 as build
 
 RUN apk add --update build-base curl \
   && curl -sLO 'https://github.com/taku910/mecab/archive/master.zip' \
@@ -9,7 +9,7 @@ RUN apk add --update build-base curl \
   && make \
   && make install
 
-FROM alpine:3.8
-RUN apk add --update --no-cache libstdc++
+FROM alpine:3.11
+RUN apk add --update --no-cache libstdc++ libc6-compat
 COPY --from=build /usr/local /usr/local
 CMD ["/usr/local/bin/mecab"]
