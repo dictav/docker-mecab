@@ -10,6 +10,6 @@ RUN apk add --update build-base curl \
   && make install
 
 FROM alpine:3.11
-RUN apk add --update --no-cache libstdc++ libc6-compat bash git curl openssl file make
+RUN apk add --update --no-cache libstdc++ libc6-compat bash git curl openssl file make perl
 COPY --from=build /usr/local /usr/local
 CMD ["/bin/bash"]
